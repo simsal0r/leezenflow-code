@@ -17,17 +17,22 @@ from simulations import Simulation
 
 class LeezenflowBase(object):
     def __init__(self, *args, **kwargs):
-        
-        config = configparser.ConfigParser()
-        config.read('config.ini')
 
-        self.mqtt_server_ip = config['mqtt']['server_ip']
-        self.mqtt_server_port = int(config['mqtt']['server_port'])
-        self.mqtt_topic =  config['mqtt']['topic']
-        self.mqtt_client_name = config['mqtt']['client_name']
-        self.mqtt_use_auth = config['mqtt']['use_auth']
-        self.mqtt_client_user_name = config['mqtt']['client_user_name']
-        self.mqtt_client_pw = config['mqtt']['client_pw']
+        try:
+        
+            config = configparser.ConfigParser()
+            config.read('config.ini')
+
+            self.mqtt_server_ip = config['mqtt']['server_ip']
+            self.mqtt_server_port = int(config['mqtt']['server_port'])
+            self.mqtt_topic =  config['mqtt']['topic']
+            self.mqtt_client_name = config['mqtt']['client_name']
+            self.mqtt_use_auth = config['mqtt']['use_auth']
+            self.mqtt_client_user_name = config['mqtt']['client_user_name']
+            self.mqtt_client_pw = config['mqtt']['client_pw']
+
+        except KeyError:
+            print("Configuration file for MQTT missing...")
             
         # Use Dict such that data can be written at the same  time
         self.shared_data = {
