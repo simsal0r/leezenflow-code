@@ -117,7 +117,7 @@ class Leezenflow(LeezenflowBase):
         def process_prediction_update():
             self.last_update_current_row = self.current_row
             self.last_update_elapsed_sec = 0
-            self.last_update_prediction_sec = self.shared_data["remaining_time"]
+            self.last_update_prediction_sec = self.shared_data["change_timestamp"] - self.shared_data["current_timestamp"]
             self.last_update_elapsed_time_start = time.monotonic()
 
         def get_next_bike_step(time_elapsed_bike,last_bike_time):
@@ -157,7 +157,7 @@ class Leezenflow(LeezenflowBase):
             self.start_time_bike = time.monotonic()            
             self.time_elapsed_bike = 0
 
-            self.last_update_prediction_sec = self.shared_data["remaining_time"]
+            self.last_update_prediction_sec = self.shared_data["change_timestamp"] - self.shared_data["current_timestamp"] 
             self.last_message = None
             self.current_row = self.bike_box_height
             self.last_update_current_row = self.current_row

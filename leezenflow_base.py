@@ -167,15 +167,16 @@ class LeezenflowBase(object):
         elif self.args.test == 1:
             t2 = threading.Thread(target = Simulation.mqtt_client_simulation, args = (self,None,run_event))
         elif self.args.test == 2:
-            t2 = threading.Thread(target = Simulation.phase_update_simulation, args = (self,"red",run_event))
-        elif self.args.test == 3:
-            t2 = threading.Thread(target = Simulation.phase_switch_simulation, args = (self,6,run_event))
-        elif self.args.test == 4:
-            t2 = threading.Thread(target = Simulation.phase_fast_simulation, args = (self,"green",run_event))
-        elif self.args.test == 5:
             t2 = threading.Thread(target = Simulation.mqtt_client_simulation_dataframe, args = (self,None,run_event))
-        elif self.args.test == 6:
+        elif self.args.test == 3:
+            t2 = threading.Thread(target = Simulation.phase_switch_simulation, args = (self,15,run_event))
+        elif self.args.test == 4:
             t2 = threading.Thread(target = Simulation.phase_switch_simulation, args = (self,30,run_event))            
+        elif self.args.test == 5:
+            t2 = threading.Thread(target = Simulation.phase_update_simulation, args = (self,"red",run_event))
+        elif self.args.test == 6:
+            print("A")
+            t2 = threading.Thread(target = Simulation.phase_fast_simulation, args = (self,"green",run_event))
         else:
             raise Exception("Invalid test dataset argument.")
 

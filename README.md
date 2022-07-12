@@ -35,7 +35,7 @@ sudo make install-python PYTHON=$(command -v python3)
 - Check an example by running `sudo python runtext.py` in directory `rpi-rgb-led-matrix/bindings/python/samples/`
 - Another example: `sudo python pulsing-brightness.py --led-gpio-mapping=adafruit-hat-pwm --led-cols=96 --led-rows=32`
 - Let's add the Leezenflow code: Clone this repo this to e.g. `/home/pi/`
-- `sudo pip3 install -r requirements.txt`
+- `sudo pip install -r requirements.txt`
 - Start an endless simulation with `sudo python leezenflow.py --test 3`
 
 The implemention assumes you have made the "adafruit-hat-pwm" modification to your hardware.
