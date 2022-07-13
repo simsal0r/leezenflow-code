@@ -1,12 +1,11 @@
 # This animation was created during the Münsterhack 2021.
+# Idea: You will make it in time when the bike is inside the green window while your passing the LED
 
-import json
 import time
-from datetime import datetime
-from leezenflow_base import LeezenflowBase
 from rgbmatrix import graphics
 from PIL import Image, ImageDraw
-import time
+
+from leezenflow_base import LeezenflowBase
 
 class AnimationMSHACK(LeezenflowBase):
     def __init__(self, command_line_args):
@@ -14,18 +13,17 @@ class AnimationMSHACK(LeezenflowBase):
        
     def run(self,_,run_event):
         print("MSHACK2021")
-        ### Start the loop ###
+
         w = 32
         h = 96
         upper_end = 10
         lower_end = h - 28
         meter_per_pixel = (lower_end - upper_end) / 120.0
-        speed_of_bike = 5.555 # meter per second
+        speed_of_bike = 5.555 # meter per second, this is a guess of an average cyclist's speed
 
-        ts = time.time()
+        ### Start the loop ###
         while(run_event.is_set()):
-            remaining_time = max(0, self.shared_data["change_timestamp"] - time.time())
-            
+            remaining_time = max(0, self.shared_data["change_timestamp"] - self.shared_data["current_timestamp"])
 
             color_map = {
                 "red": "#a52019",
@@ -33,7 +31,7 @@ class AnimationMSHACK(LeezenflowBase):
                 "red_yellow": "#ff0",
                 "yellow": "#ff0"
             }
-            color_unknown = '#00f'
+            color_unknown = '#00f' # blue
 
             image = Image.new(mode="RGB", size=(w, h), color='black')
             draw = ImageDraw.Draw(image)
@@ -52,7 +50,7 @@ class AnimationMSHACK(LeezenflowBase):
 
             # draw.rectangle([(0, lower_end), (w, h)], fill="yellow", outline=None)
 
-            overlay = Image.open("overlay.png")
+            overlay = Image.open("animations/mshack_overlay.png")
             overlay_draw = ImageDraw.Draw(overlay)
             if self.shared_data["current_phase"] == "red" or self.shared_data["current_phase"] == "red_yellow":
                 overlay_draw.rectangle([

@@ -33,20 +33,15 @@ class LeezenflowBase(object):
 
         self.args = command_line_args
             
-        # Use Dict such that data can be written at the same time
+        # Initialize status dictionary that is shared by the interpretation and animation logic
         self.shared_data = {
-            "current_phase" : "awaiting_message"
+            "current_phase" : "awaiting_message",
+            "current_timestamp" : 0,
+            "change_timestamp" : 15, 
         }
 
     def mqtt_client(self,_,run_event):
-        self.shared_data = {
-            "current_phase" : "awaiting_message"
-        }
-        print(self.shared_data)
-
-        interpreter = Interpreter()
-        smoother = HoersterTorSmoother()
-
+        
         def on_connect(client, userdata, flags, rc):
             print("mqtt topic: " + str(self.mqtt_topic))
             print("Connected with result code "+str(rc),flush=True)
@@ -54,6 +49,9 @@ class LeezenflowBase(object):
             # Subscribing in on_connect() means that if we lose the connection and
             # reconnect then subscriptions will be renewed.
             client.subscribe(self.mqtt_topic)
+
+        interpreter = Interpreter()
+        #smoother = HoersterTorSmoother()
 
         def on_message(client, userdata, msg):
             #print(msg.topic+" "+str(msg.payload, "utf-8"),flush=True)
@@ -98,7 +96,6 @@ class LeezenflowBase(object):
         log.addHandler(handler)
 
         options = RGBMatrixOptions()
-
         if self.args.led_gpio_mapping != None:
           options.hardware_mapping = self.args.led_gpio_mapping
         options.rows = self.args.led_rows
@@ -113,10 +110,8 @@ class LeezenflowBase(object):
         options.led_rgb_sequence = self.args.led_rgb_sequence
         options.pixel_mapper_config = self.args.led_pixel_mapper
         options.panel_type = self.args.led_panel_type
-
         if self.args.led_show_refresh:
           options.show_refresh_rate = 1
-
         if self.args.led_slowdown_gpio != None:
             options.gpio_slowdown = self.args.led_slowdown_gpio
         if self.args.led_no_hardware_pulse:
